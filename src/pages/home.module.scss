@@ -7,6 +7,16 @@
         margin-top: 3rem;
         margin-bottom: 1.5rem;
     }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--green-500);
+        border-radius: 20px;
+        border: 2px solid var(--gray-50);
+      }
 }
 
 .latestEpisodes {
@@ -24,6 +34,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            width: calc((100vw - 26.5rem) / 2 - 5.1rem);
 
             img {
                 width: 6rem;
@@ -34,6 +45,7 @@
             .episodesDetails {
                 flex: 1;
                 margin-left: 1rem;
+                width: 50%;
 
                 a {
                     display: block;
@@ -131,7 +143,8 @@
         td {
             font-size: 0.875rem;
 
-            img {
+            // Image component
+            div {
                 width: 2.5rem;
                 height: 2.5rem;
                 border-radius: 0.5rem;
@@ -169,6 +182,169 @@
                     filter: brightness(0.95);
                 }
             }
+        }
+    }
+
+    ul {
+        list-style: none;
+
+        li {
+            background: var(--white);
+            border: 1px solid var(--gray-100);
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+
+            position: relative;
+            width: calc(100vw - 2rem);
+
+            .header {
+                display: flex;
+
+                div:first-child {
+                    width: 6rem;
+                    height: 6rem;
+                    border-radius: 1rem;
+                }
+
+                a {
+                    flex: 1;
+                    margin-left: 1rem;
+                    
+                    color: var(--gray-800);
+                    font-family: Lexend, sans-serif;
+                    font-weight: 600;
+                    text-decoration: none;
+                    line-height: 1.4rem;
+                }
+            }
+
+            .details {
+                p {
+                    font-size: 0.875rem;
+                    margin-top: 0.5rem;
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                span {
+                    display: inline-block;
+                    margin-top: 0.5rem;
+                    font-size: 0.875rem;
+
+                    &.second {
+                        margin-left: 0.5rem;
+                        padding-left: 0.5rem;
+                        position: relative;
+
+                        &::before {
+                            content: "";
+                            width: 4px;
+                            height: 4px;
+                            border-radius: 2px;
+                            background: rgb(170, 74, 74);
+                            position: absolute;
+                            left: 0;
+                            top: 50%;
+                            transform: translate(-50%, -50%)
+                        }
+                    }
+                }
+
+                button {
+                    position: absolute;
+                    right: 2rem;
+                    bottom: 2rem;
+                    
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    background: var(--white);
+                    border: 1px solid var(--gray-100);
+                    border-radius: 0.675rem;
+                    font-size: 0;
+    
+                    transition: filter 0.2s;
+    
+                    img {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+    
+                    &:hover {
+                        filter: brightness(0.95);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1536px) and (min-width: 1281px) {
+    .latestEpisodes .episodesDetails div {
+        height: 1.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+
+        a {
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:hover {
+                display: inline-block;
+                animation: marquee 10s linear infinite;
+            }
+
+            @keyframes marquee {
+                0% {transform: translateX(0);}
+                100% {transform: translateX(-100%);}
+            }
+        }
+    }
+}
+
+@media (max-width: 1280px) {
+    .latestEpisodes ul {
+        grid-template-columns: none;
+
+        li {
+            width: calc(100vw - 26.5rem - 8rem);
+        }
+    }
+
+    .allEpisodes {
+        table {
+            display: block;
+            overflow-x: auto;
+        }
+
+        table, ul li {
+            width: calc(100vw - 26.5rem - 8rem);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .homepage {
+        height: auto;
+    }
+
+    .latestEpisodes, .allEpisodes {
+        ul li {
+            width: calc(100vw - 8rem);
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .homepage {
+        padding: 0 1rem;
+    }
+
+    .latestEpisodes, .allEpisodes {
+        ul li {
+            width: calc(100vw - 2rem)
         }
     }
 }

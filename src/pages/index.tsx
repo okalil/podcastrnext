@@ -9,6 +9,7 @@ import { format, parseISO} from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { api } from '../services/api';
 import { convertDurationToTimeString } from '../utils/convertDuration';
+import { useMediaQuery } from '../utils/mediaQuery'
 
 import styles from './home.module.scss'
 
@@ -33,6 +34,8 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
 
   const episodeList = [...latestEpisodes, ...allEpisodes];
 
+  const isLarger = useMediaQuery('(min-width: 1025px)') // Responsividade
+
   return (
     <div className={styles.homepage}>
       <Head>
@@ -46,12 +49,20 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
           {latestEpisodes.map((episode, index) => {
             return (
               <li key={episode.id}>
-                <Image width={192} height={192} src={episode.thumbnail} alt={episode.title} objectFit="cover"/>
+                <Image 
+                  width={192}
+                  height={192} 
+                  src={episode.thumbnail} 
+                  alt={episode.title} 
+                  objectFit="cover"
+                />
 
                 <div className={styles.episodesDetails}>
-                  <Link href={`/episodes/${episode.id}`}>
-                    <a>{episode.title}</a>
-                  </Link>
+                  <div>
+                    <Link href={`/episodes/${episode.id}`}>
+                      <a>{episode.title}</a>
+                    </Link>
+                  </div>
                   <p>{episode.members}</p>
                   <span>{episode.publishedAt}</span>
                   <span>{episode.durationAsString}</span>
@@ -70,49 +81,81 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
       <section className={styles.allEpisodes}>
         <h2>Todos episódios</h2>
 
-        <table cellSpacing={0}>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Podcast</th>
-              <th>Integrantes</th>
-              <th>Data</th>
-              <th>Duração</th>
-              <th></th>
-            </tr>           
-          </thead>
-          <tbody>
+        {isLarger ? (
+          <table cellSpacing={0}>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Podcast</th>
+                <th>Integrantes</th>
+                <th>Data</th>
+                <th>Duração</th>
+                <th></th>
+              </tr>           
+            </thead>
+            <tbody>
+              {allEpisodes.map((episode, index) => {
+                return (
+                  <tr key={episode.id}>
+                    <td>
+                      <Image
+                        width={120}
+                        height={120}
+                        src={episode.thumbnail}
+                        alt={episode.title}
+                        objectFit="cover"
+                      />
+                    </td>
+                    <td>
+                      <Link href={`/episodes/${episode.id}`}>
+                        <a>{episode.title}</a>
+                      </Link>
+                      
+                    </td>
+                    <td>{episode.members}</td>
+                    <td style={{ minWidth: 100 }}>{episode.publishedAt}</td>
+                    <td>{episode.durationAsString}</td>
+                    <td>
+                      <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
+                        <img src="/play-green.svg" alt="Tocar episódio" />
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <ul>  
             {allEpisodes.map((episode, index) => {
               return (
-                <tr key={episode.id}>
-                  <td>
+                <li key={episode.id}>
+                  <div className={styles.header}>
                     <Image
-                      width={120}
-                      height={120}
+                      width={192} 
+                      height={192} 
                       src={episode.thumbnail}
                       alt={episode.title}
                       objectFit="cover"
                     />
-                  </td>
-                  <td>
                     <Link href={`/episodes/${episode.id}`}>
                       <a>{episode.title}</a>
                     </Link>
-                    
-                  </td>
-                  <td>{episode.members}</td>
-                  <td style={{ width: 100 }}>{episode.publishedAt}</td>
-                  <td>{episode.durationAsString}</td>
-                  <td>
+                  </div>
+                  <div className={styles.details}>
+                    <p>{episode.members}</p>
+                    <span>{episode.publishedAt}</span>
+                    <span className={styles.second}>{episode.durationAsString}</span>
                     <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
-                      <img src="/play-green.svg" alt="Tocar episódio" />
+                      <img src="/play-green.svg" alt="Tocar episódio"/>
                     </button>
-                  </td>
-                </tr>
+                  </div>
+                </li>
               )
             })}
-          </tbody>
-        </table>
+          </ul>
+        )}
+
       </section>
     </div>
     

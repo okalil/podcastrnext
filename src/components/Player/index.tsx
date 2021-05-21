@@ -1,14 +1,32 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import { usePlayer } from '../../contexts/PlayerContext';
+import { convertDurationToTimeString } from '../../utils/convertDuration';
+import { useMediaQuery } from '../../utils/mediaQuery';
 
 import styles from './styles.module.scss';
-import { convertDurationToTimeString } from '../../utils/convertDuration';
 
 export function Player() {
+    // Responsividade
+    const tabletDown = useMediaQuery('(max-width: 768px)');
+    const phone = useMediaQuery('(max-width: 425px)');
+    
+    const [isHidden, setIsHidden] = useState(true);
+    const [position, setPosition] = useState('-8.5rem');
+
+    function toggleShow() {
+        setIsHidden(!isHidden)
+    }
+
+    useEffect(() => {
+        setPosition(isHidden ? '-8.5rem' : '0'),
+        isHidden
+    })
+
+    // Áudio
     const audioRef = useRef<HTMLAudioElement>(null);
     const [progress, setProgress] = useState(0);
 
@@ -65,28 +83,53 @@ export function Player() {
     const episode = episodeList[currentEpisodeIndex]
 
     return (
-        <div className={styles.playerContainer}>
-            <header>
-                <img src="/playing.svg" alt="Tocando agora" />
-                <strong>Tocando agora</strong>          
-            </header>
+        <div className={styles.playerContainer} style={tabletDown? {bottom: position } : {}}>
+            {!tabletDown? (
+                <>
+                <header className={styles.fullHeader} >
+                    <img src="/playing.svg" alt="Tocando agora" />
+                    <strong>Tocando agora</strong>       
+                </header>
 
-            {episode ? (
-                <div className={styles.currentEpisode}>
-                    <Image 
-                        width={592} 
-                        height={592} 
-                        src={episode.thumbnail}
-                        objectFit="cover"
-                    />
-                    <strong>{episode.title}</strong>
-                    <span>{episode.members}</span>
-                </div>
+                {episode ? (
+                    <div className={styles.currentEpisode}>
+                        <Image 
+                            width={592} 
+                            height={592} 
+                            src={episode.thumbnail}
+                            objectFit="cover"
+                        />
+                        <strong>{episode.title}</strong>
+                        <span>{episode.members}</span>
+                    </div>
+                ) : (
+                    <div className={styles.emptyPlayer}>
+                        <strong>Selecione um podcast para ouvir</strong>
+                    </div>
+                )}
+                </>
             ) : (
-                <div className={styles.emptyPlayer}>
-                    <strong>Selecione um podcast para ouvir</strong>
-                </div>
-            )} 
+                <>
+                <header className={styles.shortHeader}>
+                    <div style={episode?.title.length < 45 ?{animation: 'none', width:'100%'}:{}}>
+                        <p style={episode?.title.length < 45 ?{width: '100%'}:{}}>
+                            {episode?.title}
+                        </p>
+                        {phone && episode?.title.length > 45 ? <p>{episode?episode.title:''}</p> : ''}
+                    </div>
+                </header>
+                <button
+                    type="button"
+                    className={styles.hideButton} 
+                    onClick={toggleShow}
+                    style={isHidden? {transform:'translateY(75%) rotate(180deg)'} : {transform:'translateY(75%)'}}
+                >
+                    <svg>
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+                    </svg>
+                </button>
+                </>
+            )}
 
             <footer className={!episode ? styles.empty : ''}>
                 <div className={styles.progress}>

@@ -3,6 +3,18 @@
     padding: 3rem 2rem;
     margin: 0 auto;
 
+    @media (max-height: 768px) and (min-width: 769px) {height: calc(100vh - 6.5rem); overflow-y: auto;}
+
+    &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--purple-400);
+        border-radius: 20px;
+        border: 2px solid var(--gray-50);
+      }
+
     .thumbnailContainer {
         position: relative;
 
@@ -60,7 +72,7 @@
                 position: relative;
             }
 
-            &::before {
+            &:not(:nth-child(2))::before {
                 content: "";
                 width: 4px;
                 height: 4px;

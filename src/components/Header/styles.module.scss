@@ -19,3 +19,31 @@
         text-transform: capitalize;
     }
 }
+
+@media (max-width: 1000px) and (min-width: 769px), (max-width: 426px) {
+    .headerContainer {
+        flex-direction: column;
+        padding: 0.5rem 0;
+
+        p {
+            margin: 0;
+            padding: 0.25rem 0;
+            border: none;
+        }
+
+        span {
+            margin: 0;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .headerContainer {
+        height: auto;
+        padding: 0.75rem 0;
+
+        p {
+            padding: 0.5rem 0;
+        }
+    }
+}
