@@ -10,9 +10,9 @@
       }
 
     &::-webkit-scrollbar-thumb {
-        background-color: var(--purple-400);
+        background-color: var(--green-500);
         border-radius: 20px;
-        border: 2px solid var(--gray-50);
+        border: 2px solid var(--general-background);
       }
 
     .thumbnailContainer {
@@ -36,7 +36,7 @@
             &:first-child {
                 left: 0;
                 top: 50%;
-                background: var(--purple-500);
+                background: var(--purple-background);
                 transform: translate(-50%, -50%)
             }
 
@@ -55,7 +55,7 @@
 
     header {
         padding-bottom: 1rem;
-        border-bottom: 1px solid var(--gray-100);
+        border-bottom: 1px solid var(--border-color);
 
         h1 {
             margin-top: 2rem;
@@ -90,7 +90,7 @@
     .description {
         margin-top: 2rem;
         line-height: 1.675rem;
-        color: var(--gray-800);
+        color: var(--text-primary);
 
         p {
             margin: 1.5rem 0;

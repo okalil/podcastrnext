@@ -1,0 +1,18 @@
+.toggleButton {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    border: 0;
+    background: transparent;
+
+    &:hover {
+        svg circle:not(mask circle) {
+            fill: var(--text-primary)
+        }
+    }
+
+    svg {
+        overflow: visible;
+    }
+}
